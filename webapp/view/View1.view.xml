@@ -417,18 +417,22 @@
                 />
                 <Button
                     type="Emphasized"
-                    text="Submit"
+                    text="Initiate Supply"
                     press="onSubmitMOM"
                 />
 
                 <Button
-                    type="Accept"
-                    text="Confirm MOM"
+                    type="Emphasized"
+                    text="Return to Correction"
                     press="onPressMoM"
                 />
                 <Button
-                    type="Reject"
-                    text="Cancel"
+                    type="Emphasized"
+                    text="Negotiate Warehouse"
+                />
+                <Button
+                    type="Emphasized"
+                    text="Confirm Supply and Release"
                 />
             </OverflowToolbar>
         </footer>
