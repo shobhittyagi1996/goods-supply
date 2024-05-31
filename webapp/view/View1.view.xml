@@ -1,0 +1,436 @@
+<mvc:View
+    controllerName="com.sap.goodssupply.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:semantic="sap.f.semantic"
+    xmlns:u="sap.ui.unified"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:upload="sap.m.upload"
+    xmlns:s="sap.suite.ui.commons"
+    xmlns:t="sap.f"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <content>
+            <uxap:ObjectPageLayout
+                id="ObjectPageLayout"
+                upperCaseAnchorBar="false"
+                showAnchorBar="true"
+                enableLazyLoading="true"
+            >
+                <uxap:sections>
+                    <uxap:ObjectPageSection
+                        id="_IDGenObjectPageSection3"
+                        showTitle="false"
+                    >
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection
+                                id="_IDGenObjectPageSubSection6"
+                                title="General Information"
+                            >
+                                <uxap:blocks>
+                                    <f:SimpleForm
+                                        id="SimpleFormChange354"
+                                        editable="true"
+                                        layout="ResponsiveGridLayout"
+                                        labelSpanXL="3"
+                                        labelSpanL="3"
+                                        labelSpanM="3"
+                                        labelSpanS="12"
+                                        adjustLabelSpan="false"
+                                        emptySpanXL="5"
+                                        emptySpanL="5"
+                                        emptySpanM="5"
+                                        emptySpanS="0"
+                                        columnsXL="1"
+                                        columnsL="1"
+                                        columnsM="1"
+                                        singleContainerFullSize="false"
+                                    >
+                                        <Label
+                                            text="Customer"
+                                            required="true"
+                                        />
+                                        <Input
+                                            value="KPO"
+                                            id="customer"
+                                            editable="false"
+                                        />
+
+                                        <Label
+                                            text="Contract"
+                                            required="true"
+                                            
+                                        />
+                                        <Input
+                                            id="contract"
+                                            value=""
+                                            valueHelpRequest="contractHelp"
+                                            showValueHelp="true"
+                                        />
+
+                                        <Label
+                                            text="Call-off"
+                                            required="true"
+                                        />
+                                        <Input
+                                            id="call-off"
+                                            value=""
+                                            valueHelpRequest="calloffHelp"
+                                            showValueHelp="true"
+                                        />
+                                        <Label
+                                            text="Amendment"
+                                            required="true"
+                                        />
+                                        <Input
+                                            value=""
+                                            id="amendment"
+                                            editable="false"
+                                        />
+                                        <Label
+                                            text="Incoterm"
+                                            required="true"
+                                        />
+                                        <Input
+                                            value="DDP/EXW/FCA"
+                                            id="incoterm"
+                                            editable="false"
+                                        />
+                                        <Label
+                                            text="Delivery Note/Way Bill"
+                                            required="true"
+                                        />
+                                        <DatePicker id="devlivery" />
+                                        <Label
+                                            text="Status"
+                                            required="true"
+                                        />
+                                        <Input
+                                            value=""
+                                            id="status"
+                                            editable="false"
+                                        />
+                                        <Label
+                                            text="Delivery Point"
+                                            required="true"
+                                        />
+                                        <Input
+                                            value="AKSAI"
+                                            id="deliverypoint"
+                                            editable="false"
+                                        />
+                                        <Label text="Comments for Shipment" required="true" />
+                                        <TextArea
+                                            id="comments"
+                                            cols="40"
+                                            rows="2"
+                                        />
+                                    </f:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+
+                            <uxap:ObjectPageSubSection
+                                id="_IDGenObjectPageSubSection"
+                                title="items"
+                            >
+                                <uxap:blocks>
+                                    <Table
+                                        id="Table"
+                                        items="{myModel>/}"
+                                    >
+                                        
+                                        <columns>
+                                           
+                                            <Column id="_IDGenColumn1">
+                                                <Text
+                                                    id="_IDGenText2"
+                                                    text="Items"
+                                                />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Ship Qty" />
+                                            </Column>
+
+                                            <Column>
+                                                <Text text="Expected Delivery Date/Due Date" />
+                                            </Column>
+                                             <Column id="_IDGenColumn11">
+                                                <Text
+                                                    id="_IDGenText22"
+                                                    text="Inspection level"
+                                                />
+                                            </Column>
+
+                                           
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem
+                                                id="_IDGenColumnListItem1"
+                                            >
+                                                <cells>
+                                                    
+                                                    <Text
+                                                        id="_IDGenText6"
+                                                        text="{myModel>items}"
+                                                    />
+                                                    <Text
+                                                        id="_IDGenText7"
+                                                        text="{myModel>shipqty}"
+                                                    />
+
+                                                    <Text
+                                                        id="_IDGenText8"
+                                                        text="{myModel>expecteddate}"
+                                                    />
+
+                                                    <Text
+                                                        id="_IDGenText60"
+                                                        text="{myModel>inspectionlevel}"
+                                                    />
+                                                   
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                            <uxap:ObjectPageSubSection
+                                id="_IDGenObjectPageSubSection6e"
+                                title="Attach Supporting Documents"
+                            >
+                                <uxap:blocks>
+                                    <upload:UploadSetwithTable
+                                            id="UploadSetTable"
+                                            sticky="ColumnHeaders,HeaderToolbar"
+                                            width="auto"
+                                            fixedLayout="false"
+                                            inset="true"
+                                            autoPopinMode="true"
+                                            hiddenInPopin="None"
+                                            uploadCompleted="onUploadCompleted"
+                                            beforeInitiatingItemUpload="onBeforeInitiatingItemUpload"
+                                            itemValidationHandler=".itemValidationCallback"
+                                            beforeUploadStarts="onBeforeUploadStarts"
+                                            selectionChange="onSelectionChange"
+                                            itemRenamed="onDocumentRenamedSuccess"
+                                            mediaTypes="text/plain,application/msword,image/png"
+                                            maxFileNameLength="60"
+                                            uploadUrl="/uploadFiles"
+                                            multiple="true"
+                                            items="{sModel>/}"
+                                            mode="MultiSelect"
+                                        >
+                                            <upload:headerToolbar>
+                                                <OverflowToolbar
+                                                    id="_IDGenOverflowToolbar1"
+                                                >
+                                                    <Title
+                                                        id="_IDGenTitle1"
+                                                        level="H2"
+                                                    />
+                                                    <ToolbarSpacer
+                                                        id="_IDGenToolbarSpacer3"
+                                                    />
+                                                    <SearchField
+                                                        id="_IDGenSearchField2"
+                                                        width="20%"
+                                                        liveChange=".onSearch"
+                                                    >
+                                                        <layoutData>
+                                                            <OverflowToolbarLayoutData
+                                                                id="_IDGenOverflowToolbarLayoutData3"
+                                                                priority="NeverOverflow"
+                                                            />
+                                                        </layoutData>
+                                                    </SearchField>
+                                                    <ToolbarSeparator
+                                                        id="_IDGenToolbarSeparator1"
+                                                    />
+                                                    <upload:ActionsPlaceholder
+                                                        id="_IDGenActionsPlaceholder1"
+                                                        placeholderFor="UploadButtonPlaceholder"
+                                                    />
+                                                    <Button
+                                                        id="downloadSelectedButton"
+                                                        text="Download"
+                                                        enabled="false"
+                                                        press="onDownloadFiles"
+                                                    />
+                                                    <MenuButton
+                                                        id="_IDGenMenuButton1"
+                                                        text="Add"
+                                                    >
+                                                        <menu>
+                                                            <Menu
+                                                                id="_IDGenMenu1"
+                                                            >
+                                                                <MenuItem
+                                                                    id="_IDGenMenuItem1"
+                                                                    text="URL"
+                                                                    press="openAddOrEditDialog"
+                                                                />
+                                                                <MenuItem
+                                                                    id="_IDGenMenuItem2"
+                                                                    text="Document Without File"
+                                                                    press=".openDocumentWithoutFileDialog"
+                                                                />
+                                                            </Menu>
+                                                        </menu>
+                                                        <layoutData>
+                                                            <OverflowToolbarLayoutData
+                                                                id="_IDGenOverflowToolbarLayoutData4"
+                                                                priority="AlwaysOverflow"
+                                                            />
+                                                        </layoutData>
+                                                    </MenuButton>
+                                                    <Button
+                                                        id="removeDocumentButton"
+                                                        text="Remove"
+                                                        press=".onRemoveButtonFromMenuDocumentHandler"
+                                                        enabled="false"
+                                                    >
+                                                        <layoutData>
+                                                            <OverflowToolbarLayoutData
+                                                                id="_IDGenOverflowToolbarLayoutData5"
+                                                                priority="AlwaysOverflow"
+                                                            />
+                                                        </layoutData>
+                                                    </Button>
+                                                    <Button
+                                                        id="renameButton"
+                                                        enabled="false"
+                                                        press="onRenameDocument"
+                                                        text="Rename"
+                                                    >
+                                                        <layoutData>
+                                                            <OverflowToolbarLayoutData
+                                                                id="_IDGenOverflowToolbarLayoutData6"
+                                                                priority="AlwaysOverflow"
+                                                            />
+                                                        </layoutData>
+                                                    </Button>
+                                                    <Button
+                                                        id="editUrlButton"
+                                                        text="Edit URL"
+                                                        enabled="false"
+                                                        press="onEditUrl"
+                                                    >
+                                                        <layoutData>
+                                                            <OverflowToolbarLayoutData
+                                                                id="_IDGenOverflowToolbarLayoutData7"
+                                                                priority="AlwaysOverflow"
+                                                            />
+                                                        </layoutData>
+                                                    </Button>
+                                                </OverflowToolbar>
+                                            </upload:headerToolbar>
+                                            <upload:columns>
+                                                <Column
+                                                    id="filName"
+                                                    importance="High"
+                                                >
+                                                    <header>
+                                                        <Label
+                                                            id="_IDGenLa5"
+                                                            text="file Name"
+                                                        />
+                                                    </header>
+                                                </Column>
+                                                
+                                               
+                                            </upload:columns>
+                                            <upload:items>
+                                                <upload:UploadSetwithTableItem
+                                                    id="_IDGenUploadSetwithTableItem1"
+                                                    fileName="{sModel>filename}"
+                                                    mediaType="{sModel>mediaType}"
+                                                >
+                                                  
+                                                    <upload:cells>
+                                                        <HBox id="_IDGenHBox2">
+                                                            <core:Icon
+                                                                id="_IDGenIcon1"
+                                                                src="{sModel>mediaType}"
+                                                                color="white"
+                                                                class="sapMUSTItemImage sapMUSTItemIcon"
+                                                            />
+                                                            <VBox
+                                                                id="_IDGenVBox1"
+                                                                class="sapUiTinyMargin sapUiSmallMarginBegin"
+                                                            >
+                                                                <Link
+                                                                    id="_IDGenLink3"
+                                                                    text="{sModel>filename}"
+                                                                    press="openPreview"
+                                                                    class="sapUiTinyMarginBottom"
+                                                                />
+                                                                <Text
+                                                                    id="_IDGenText10"
+                                                                    class="sapUiTinyMarginTop"
+                                                                />
+                                                            </VBox>
+                                                        </HBox>
+                                                        <!-- <Text
+                                                                        id="_IDGen"
+                                                                        text="{sModel>filename}"
+                                                                    /> -->
+
+                                                        <!-- <Text
+                                                                        id="_IDGenText11"
+                                                                        text="{sModel>name}"
+                                                                    /> -->
+                                                       
+
+                                                        <Button
+                                                            id="_IDGenButton2"
+                                                            class="sapUiTinyMarginBegin"
+                                                            type="Transparent"
+                                                            icon="sap-icon://decline"
+                                                            press="onRemoveHandler"
+                                                        />
+                                                    </upload:cells>
+                                                </upload:UploadSetwithTableItem>
+                                            </upload:items>
+                                        </upload:UploadSetwithTable>
+                                    
+                                
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
+        </content>
+        <footer>
+            <OverflowToolbar id="Toolbar">
+                <ToolbarSpacer />
+
+                <Button
+                    type="Emphasized"
+                    text="Save as Draft"
+                />
+                <Button
+                    type="Emphasized"
+                    text="Submit"
+                    press="onSubmitMOM"
+                />
+
+                <Button
+                    type="Accept"
+                    text="Confirm MOM"
+                    press="onPressMoM"
+                />
+                <Button
+                    type="Reject"
+                    text="Cancel"
+                />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+    xmlns:upload="sap.m.upload"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+   
+>
+    <Dialog
+        title="Call-off "
+        contentWidth="400px"
+    >
+        <content>
+         <List
+                items="{call>/}"
+                headerText=""
+                growing="true"
+                growingThreshold="4"
+                growingScrollToLoad="false"
+            >
+                <StandardListItem title="{call>callOff}" type="Active" press="onCalloffSelect" />
+            </List>
+      </content>
+       <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                
+                <Button
+                    text="Cancel"
+                    press="onCalloffcancel"
+                />
+            </Toolbar>
+            </footer>
+           
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition
+    xmlns:upload="sap.m.upload"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+   
+>
+    <Dialog
+        title="Contract "
+        contentWidth="400px"
+    >
+        <content>
+         <List
+                items="{con>/}"
+                headerText=""
+                growing="true"
+                growingThreshold="4"
+                growingScrollToLoad="false"
+            >
+                <StandardListItem title="{con>conNo}" type="Active" press="onContractSelect" />
+            </List>
+      </content>
+       <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                
+                <Button
+                    text="Cancel"
+                    press="onCancelContract"
+                />
+            </Toolbar>
+            </footer>
+           
+    </Dialog>
+</core:FragmentDefinition>
