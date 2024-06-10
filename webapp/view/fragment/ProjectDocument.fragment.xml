@@ -1,0 +1,116 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    templateShareable="false"
+    id="YourFileTypeSelectionFragment1"
+    class="sapUiTinyMarginTop"
+>
+    <Dialog
+        id="i1"
+        title="Add Document"
+        contentWidth="34rem"
+        contentHeight="18rem"
+        class="sapUiSmallMargin"
+    >
+        <content>
+            <Toolbar
+                id="i3"
+                class="sapUiTinyMargin"
+                style="Clear"
+            >
+                <Title
+                    id="title1"
+                    text="Project Documents"
+                />
+                <ToolbarSpacer id="ts2" />
+                <Button
+                    id="_IDGenButton189n"
+                    text="Browse"
+                    press=".uploadFilesHandlers"
+                />
+            </Toolbar>
+            <Table
+                id="tab2"
+                backgroundDesign="Solid"
+                width="auto"
+                fixedLayout="false"
+                class="sapUiTinyMargin sapUiTableBorderVisible"
+                items="{path: '/selectedItems', templateShareable:false}"
+            >
+                <columns>
+                    <Column id="col4">
+                        <Text
+                            id="tit5"
+                            text="Name"
+                        />
+                    </Column>
+                    <Column id="col5">
+                        <Label
+                            id="l2"
+                            text="Type"
+                            required="true"
+                        />
+                    </Column>
+                    <Column id="col1rr" />
+                </columns>
+                <items>
+                    <ColumnListItem id="clgg1">
+                        <cells>
+                            <Text
+                                id="tiggt4"
+                                text="{fileName}"
+                            />
+                            <ComboBox
+                                id="cb1"
+                                items="{path: '/types', templateShareable:false}"
+                                selectedKey="{fileCategorySelect}"
+                                selectionChange=".onDocumentTypeChange"
+                                valueState="{=${fileCategorySelect} ? 'None' : 'Error'}"
+                                valueStateText="Select a valid document type"
+                            >
+                                <core:ListItem
+                                    id="ligeg1"
+                                    key="{categoryId}"
+                                    text="{categoryText}"
+                                />
+                            </ComboBox>
+                            <Button
+                                id="bgdgg1"
+                                type="Transparent"
+                                icon="sap-icon://decline"
+                                press=".handleRemove"
+                            >
+                                <customData>
+                                    <core:CustomData
+                                        key="item"
+                                        value="{itemInstance}"
+                                    />
+                                    <core:CustomData
+                                        key="reject"
+                                        value="{fnReject}"
+                                    />
+                                </customData>
+                            </Button>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <beginButton>
+            <Button
+                id="yff7"
+                text="Add"
+                type="Emphasized"
+                enabled="{parts: ['/selectedItems'], formatter: '.AddButtonEnabled'}"
+                press=".handleConfirmation"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                id="y68906"
+                text="Cancel"
+                press=".closeFileUplaodFragment"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

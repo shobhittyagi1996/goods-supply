@@ -1,73 +1,89 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/Fragment"
+    "sap/m/upload/UploadSetwithTable",
+    "sap/m/upload/UploadSetwithTableItem",
+    "sap/m/MessageBox",
+    "sap/ui/core/Fragment",
+    "sap/m/MessageToast",
+    "sap/m/Dialog",
+    "sap/m/Button",
+    "sap/m/library",
+    "sap/m/Text",
+    "sap/ui/core/library",
+    "sap/ui/core/Item",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Element"
 ],
-    function (Controller, JSONModel, Fragment) {
+    function (Controller, JSONModel, UploadSetwithTable, UploadSetwithTableItem, MessageBox, Fragment, MessageToast, Dialog, Button, mobileLibrary, Text, coreLibrary, CoreItem, Filter, FilterOperator, Element) {
         "use strict";
 
         return Controller.extend("com.sap.goodssupply.controller.View1", {
             onInit: function () {
+                var oModel = new JSONModel();
+                this.getView().setModel(oModel);
+                this.oUploadSetTable = this.byId("UploadSetTable");
+                this.documentTypes = this.getFileCategories();
+                this.oItemsProcessor = [];
 
                 let data = [
                     {
                         "items": "item 1 - Material item",
+                        "orderedqty": "1",
                         "shipqty": "1",
                         "expecteddate": "01.05.2024",
                         "inspectionlevel": "1",
+                        "unitofmeasure":"PCS"
 
                     },
                     {
                         "items": "item 2 - Material item",
-                        "shipqty": "2",
+                        "orderedqty": "2",
+                        "shipqty": "1",
                         "expecteddate": "01.05.2024",
-                        "inspectionlevel": "2"
+                        "inspectionlevel": "2",
+                        "unitofmeasure":"PCS"
 
                     }
                 ];
+                let logModel = new JSONModel([{
+                    "logDateTime": "2024-04-01",
+                    "logTitle": "KPO Dept Commented",
+                    "logComments": "Point No 3 in MOM adjusted.",
+                    "loggedBy": "User@kpo.kz",
+    
+                },
+                {
+                    "logDateTime": "2024-04-05",
+                    "logTitle": "Supplier Commented",
+                    "logComments": "Describe more on point 3 in MOM Attached",
+                    "loggedBy": "supplier@gmail.com",
+    
+                },
+                {
+                    "logDateTime": "2024-04-09",
+                    "logTitle": "Process Started",
+                    "logComments": "MoM Registered",
+                    "loggedBy": "VQ@kpo.kz",
+    
+                }]);
                 let sDropdown = [
+                    
                     {
-                        "filename": "Production Plan/Schedule.xls",
-                        "mediaType": "sap-icon://excel-attachment",
-
-
-
-                    },
-                    {
-                        "filename": "Project Doc-s(DRW,DTS,QCP/ITP).pdf",
-                        "mediaType": "sap-icon://pdf-attachment",
-
-
-                    },{
                         "filename": "Packing List",
                         "mediaType": "sap-icon://doc-attachment",
 
 
                     },
-                    {
-                        "filename": "Test and Material Certificates",
-                        "mediaType": "sap-icon://doc-attachment",
-
-
-                    },
+                    
                     {
                         "filename": "Preliminary Photos",
                         "mediaType": "sap-icon://doc-attachment",
 
 
                     },
-                    {
-                        "filename": "Manufacturer Data Book",
-                        "mediaType": "sap-icon://doc-attachment",
-
-
-                    },
-                    {
-                        "filename": "Dispatch Note",
-                        "mediaType": "sap-icon://doc-attachment",
-
-
-                    },
+                    
                     {
                         "filename": "Guarantee Letter of Customs duties payment",
                         "mediaType": "sap-icon://excel-attachment",
@@ -82,6 +98,7 @@ sap.ui.define([
                     }
                     
                 ];
+                
                 let contractData = [{ conNo: "12" },
                 { conNo: "1234 Description" },
                 ];
@@ -100,6 +117,7 @@ sap.ui.define([
                 this.getView().setModel(omodel, "myModel");
                 let gmodel = new JSONModel(sDropdown);
                 this.getView().setModel(gmodel, "sModel");
+                this.getView().setModel(logModel, "logModel");
 
             },
             itemValidationCallback: function (oItemInfo) {
@@ -139,6 +157,110 @@ sap.ui.define([
                     }
                     return oItemPromise;
                 }
+            },
+           
+            handleConfirmation: function () {
+                debugger
+                var oData = this._fileUploadFragment.getModel().getData();
+                var oSelectedItems = oData.selectedItems;
+    
+                if (oSelectedItems && oSelectedItems.length) {
+                    oSelectedItems.forEach(function (oItem) {
+                        var oItemToUploadRef = oItem.itemInstance;
+                        // setting the header field for custom document type selected
+                        oItemToUploadRef.addHeaderField(new CoreItem({
+                            key: "documentType",
+                            text: oItem.fileCategorySelected
+                        }));
+                        oItem.fnResolve(oItemToUploadRef);
+                    });
+                }
+                this._fileUploadFragment.destroy();
+                this._fileUploadFragment = null;
+                this._oFilesTobeuploaded = [];
+                this.oItemsProcessor = [];
+            },
+            isAddButtonEnabled: function (aSelectedItems) {
+                if (aSelectedItems && aSelectedItems.length) {
+                    if (aSelectedItems.some(function (item) {
+                        return !item.fileCategorySelected;
+                    })) {
+                        return false;
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            openFileUploadDialog: function () {
+                var items = this.oItemsProcessor;
+    
+                if (items && items.length) {
+    
+                    this._oFilesTobeuploaded = items;
+    
+                    var oItemsMap = this._oFilesTobeuploaded.map(function (oItemProcessor) {
+    
+                        return {
+                            fileName: oItemProcessor.item.getFileName(),
+                            fileCategorySelected: this.documentTypes[0].categoryId,
+                            itemInstance: oItemProcessor.item,
+                            fnResolve: oItemProcessor.resolve,
+                            fnReject: oItemProcessor.reject
+                        };
+                    }.bind(this));
+                    var oModel = new JSONModel({
+                        "selectedItems": oItemsMap,
+                        "types": this.documentTypes
+    
+                    });
+                    if (!this._fileUploadFragment) {
+                        Fragment.load({
+                            name: "com.sap.goodssupply.view.fragment.FileUpload",
+                            id: this.getView().getId() + "-file-upload-dialog",
+                            controller: this
+                        })
+                            .then(function (oPopover) {
+                                this._fileUploadFragment = oPopover;
+                                this.getView().addDependent(oPopover);
+                                oPopover.setModel(oModel);
+                                oPopover.open();
+                            }.bind(this));
+                    } else {
+                        this._fileUploadFragment.setModel(oModel);
+                        this._fileUploadFragment.open();
+                    }
+                }
+            },
+            closeFileUplaodFragment: function () {
+                this._fileUploadFragment.close();
+            },
+            uploadFilesHandler: function () {
+                var oUploadSetTableInstance = this.byId("UploadSetTable");
+    
+                oUploadSetTableInstance.fileSelectionHandler();
+            },
+            onUploadCompleted: function (oEvent) {
+                var oModel = this.getView().getModel();
+                var iResponseStatus = oEvent.getParameter("status");
+    
+                // check for upload is sucess
+                if (iResponseStatus === 201) {
+                    oModel.refresh(true);
+                    setTimeout(function () {
+                        MessageToast.show("Document Added");
+                    }, 1000);
+                }
+    
+            },
+            getFileCategories: function () {
+                return [
+                    { categoryId: "DN", categoryText: "Delivery Note" },
+                    { categoryId: "PL", categoryText: "Packing List" },
+                    { categoryId: "PP", categoryText: "Preliminary Photos" },
+                    { categoryId: "GL", categoryText: "Guarantee Letter of customs duties payment" },
+                    
+                ];
             },
             contractHelp: function () {
                 if (!this.contract) {
